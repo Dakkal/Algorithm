@@ -1,3 +1,3 @@
-﻿  27866번 문제.cpp
-C:\Project\Algorithm\Algorithm\Algorithm\27866번 문제.cpp(13,30): warning C4018: '>': signed 또는 unsigned가 일치하지 않습니다.
+﻿  1018번 문제.cpp
+C:\Project\Algorithm\Algorithm\Algorithm\1018번 문제.cpp(77,25): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
   Algorithm.vcxproj -> C:\Project\Algorithm\Algorithm\Debug\Algorithm.exe
