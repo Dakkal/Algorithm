@@ -3,74 +3,203 @@
 #include <functional>
 #include <vector>
 #include <string>
+#include <map>
 
 using namespace std;
 
-int CheckBox(vector<int>& Cards, bool* pBox, int iSelectNumb)
+vector<pair<string, string>> SplitGift(vector<string> gifts)
 {
-    int iCount = 0;
-    while (false == pBox[iSelectNumb])
+    vector<pair<string, string>> SplitGift;
+
+    for (auto& gift : gifts)
     {
-        pBox[iSelectNumb] = true;
-        iSelectNumb = Cards[iSelectNumb] - 1;
-        iCount++;
-    }
-    return iCount;
-}
+        string Give;
+        string Take;
 
-int solution(vector<int> cards) 
-{
-    int iAnswer = 0;
+        int iBlank = gift.find_first_of(" ");
+        Give = gift.substr(0, iBlank);
+        Take = gift.substr(iBlank + 1, string::npos);
 
-    for (size_t i = 0; i < cards.size(); i++)
-    {
-        bool* pBox1 = new bool[cards.size()];
-        for (size_t i = 0; i < cards.size(); i++)
-        {
-            pBox1[i] = false;
-        }
-
-        int iCount1 = CheckBox(cards, pBox1, i);
-
-        for (size_t j = 0; j < cards.size(); j++)
-        {
-            if (true == pBox1[j])
-                continue;
-
-            bool* pBox2 = pBox1;
-
-            int iCount2 = CheckBox(cards, pBox2, j);
-
-            int iScore = iCount1 * iCount2;
-            iAnswer = max(iAnswer, iScore);
-        }
+        SplitGift.push_back(make_pair(Give, Take));
     }
 
-    return iAnswer;
+    return SplitGift;
 }
+
+/* ±ò»ïÇÑ Á¤´ä */
+int solution(vector<string> friends, vector<string> gifts)
+{
+    int answer = 0;
+
+    int iFriendSize = friends.size();
+
+    map<string, int> friendsIndex;
+    for (int i = 0; i < iFriendSize; i++)
+    {
+        friendsIndex[friends[i]] = i;
+    }
+    vector<pair<string, string>> SplitedGifts = SplitGift(gifts);
+
+    map<string, int> GiftCount;
+    vector<vector<int>> GiftTable(iFriendSize, vector<int>(iFriendSize, 0));
+    vector<int> NextMonthGift(iFriendSize, 0);
+
+    for (auto gift : SplitedGifts)
+    {
+        int iGive = friendsIndex[gift.first];
+        int iTake = friendsIndex[gift.second];
+
+        GiftTable[iGive][iTake]++;
+        GiftCount[gift.first]++;
+        GiftCount[gift.second]--;
+    }
+
+    for (int i = 0; i < iFriendSize; i++)
+    {
+        for (int j = 0; j < iFriendSize; j++)
+        {
+            if (i == j) continue;
+
+            if (GiftTable[i][j] > GiftTable[j][i] || (GiftTable[i][j] == GiftTable[j][i] && GiftCount[friends[i]] > GiftCount[friends[j]])) 
+            {
+                NextMonthGift[i]++;
+            }
+        }
+    }
+
+    answer = *max_element(NextMonthGift.begin(), NextMonthGift.end());
+
+
+    return answer;
+}
+
+//map<string, int> CheckGiftFactor(vector<string> friends, vector<pair<string, string>> gifts)
+//{
+//    map<string, int> GiftFactor;
+//
+//
+//    for (auto& Name : friends)
+//    {
+//        int iGive = 0;
+//        int iTake = 0;
+//
+//        for (auto& gift : gifts)
+//        {
+//           
+//            if (gift.first == Name)
+//            {
+//                iGive++;
+//            }
+//            else if (gift.second == Name)
+//            {
+//                iTake++;
+//            }
+//        }
+//
+//        int Factor = iGive - iTake;
+//        GiftFactor.emplace(Name, Factor);
+//    }
+//
+//    return GiftFactor;
+//}
+//
+//int Find_TopGift(vector<string> friends, vector<pair<string, string>> GiftPair, map<string, int> GiftFactor)
+//{
+//    int iTopScore = 0;
+//
+//    for (auto& Name : friends)
+//    {
+//        int iMonthGift = 0;
+//
+//        for (auto& CompareName : friends)
+//        {
+//            if (Name == CompareName)
+//                continue;
+//
+//            int iNameGive = 0;
+//            int iComNameGive = 0;
+//
+//            for (auto& Gift : GiftPair)
+//            {
+//                if (Name == Gift.first && CompareName == Gift.second)
+//                {
+//                    iNameGive++;
+//                }
+//                else if (Name == Gift.second && CompareName == Gift.first)
+//                {
+//                    iComNameGive++;
+//                }
+//            }
+//
+//            if (iNameGive > iComNameGive)
+//            {
+//                iMonthGift++;
+//            }
+//            else if (iNameGive == iComNameGive)
+//            {
+//                if (GiftFactor.find(Name)->second > GiftFactor.find(CompareName)->second)
+//                {
+//                    iMonthGift++;
+//                }
+//            }
+//        }
+//
+//        if (iMonthGift > iTopScore)
+//            iTopScore = iMonthGift;
+//    }
+//
+//    return iTopScore;
+//}
+//
+//
+//int solution(vector<string> friends, vector<string> gifts) 
+//{
+//    int answer = 0;
+//
+//    vector<pair<string, string>> GiftPairs = SplitGift(gifts);
+//
+//    map<string, int> GiftFactors = CheckGiftFactor(friends, GiftPairs);
+//
+//    answer = Find_TopGift(friends, GiftPairs, GiftFactors);
+//
+//    return answer;
+//}
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
+    int iFriendNumb = 0;
+    vector<string> Friends;
+    
+    int iGiftNumb = 0;
+    vector<string> Gifts;
 
-    vector<int> vecCards;
-    size_t iCardNumb = 0;
+    cout << "Ä£±¸ ¼ö : ";
+    cin >> iFriendNumb;
 
-    cout << "ÀÔ·ÂÇÒ Ä«µå°¹¼ö ¼±ÅÃ : ";
-    cin >> iCardNumb;
-
-    for (size_t i = 0; i < iCardNumb; i++)
+    for (size_t i = 0; i < iFriendNumb; i++)
     {
-        int iNumb = 0;
+        string FriendName;
+        
+        cin >> FriendName;
 
-        cin >> iNumb;
+        Friends.push_back(FriendName);
+    }
+   
 
-        vecCards.push_back(iNumb);
+    cout << "¼±¹° È½¼ö : ";
+    cin >> iGiftNumb;
+    cin.ignore();
+
+    for (size_t i = 0; i < iGiftNumb; i++)
+    {
+        string GiftName;
+
+        getline(cin, GiftName);
+
+        Gifts.push_back(GiftName);
     }
 
-    cout << solution(vecCards) << endl;
+    cout << solution(Friends, Gifts) << endl;
 
     return 0;
 } 
