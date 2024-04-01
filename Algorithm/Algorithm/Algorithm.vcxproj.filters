@@ -21,7 +21,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="1259번 문제.cpp">
+    <ClCompile Include="백준\1436번 문제.cpp">
       <Filter>Progress</Filter>
     </ClCompile>
   </ItemGroup>
