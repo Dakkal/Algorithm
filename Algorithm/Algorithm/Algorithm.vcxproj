@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="프로그래머스\가장 많이 받은 선물.cpp" />
+    <ClCompile Include="프로그래머스\붕대 감기.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6ACEEE03-CE10-4568-A9F9-0A20B963991F}</ProjectGuid>

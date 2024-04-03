@@ -6,12 +6,12 @@
 
 using namespace std;
 
-int CheckBox(vector<int>& Cards, bool* pBox, int iSelectNumb)
+int CheckBox(vector<int>& Cards, vector<bool>& Box, int iSelectNumb)
 {
     int iCount = 0;
-    while (false == pBox[iSelectNumb])
+    while (false == Box[iSelectNumb])
     {
-        pBox[iSelectNumb] = true;
+        Box[iSelectNumb] = true;
         iSelectNumb = Cards[iSelectNumb] - 1;
         iCount++;
     }
@@ -22,24 +22,22 @@ int solution(vector<int> cards)
 {
     int iAnswer = 0;
 
-    for (size_t i = 0; i < cards.size(); i++)
+    int iCardSize = cards.size();
+
+    for (size_t i = 0; i < iCardSize; i++)
     {
-        bool* pBox1 = new bool[cards.size()];
-        for (size_t i = 0; i < cards.size(); i++)
-        {
-            pBox1[i] = false;
-        }
+        vector<bool> Box1(iCardSize, false);
 
-        int iCount1 = CheckBox(cards, pBox1, i);
+        int iCount1 = CheckBox(cards, Box1, i);
 
-        for (size_t j = 0; j < cards.size(); j++)
+        for (size_t j = 0; j < iCardSize; j++)
         {
-            if (true == pBox1[j])
+            if (true == Box1[j])
                 continue;
 
-            bool* pBox2 = pBox1;
+            vector<bool> Box2 = Box1;
 
-            int iCount2 = CheckBox(cards, pBox2, j);
+            int iCount2 = CheckBox(cards, Box2, j);
 
             int iScore = iCount1 * iCount2;
             iAnswer = max(iAnswer, iScore);

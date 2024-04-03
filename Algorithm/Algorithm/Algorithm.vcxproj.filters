@@ -21,7 +21,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="프로그래머스\가장 많이 받은 선물.cpp">
+    <ClCompile Include="프로그래머스\붕대 감기.cpp">
       <Filter>Progress</Filter>
     </ClCompile>
   </ItemGroup>
