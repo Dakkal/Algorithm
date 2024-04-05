@@ -1,18 +1,71 @@
 #include <iostream>
 #include <algorithm>
 #include <functional>
-#include <vector>
 #include <string>
+#include <string_view>
+#include <vector>
+#include <list>
 #include <map>
-#include <memory>
 
 using namespace std;
 
-enum DATA { CODE, DATE, MAXIMUM, REMAIN, DATA_END };
+enum class DATA { CODE, DATE, MAXIMUM, REMAIN, DATA_END };
 
-vector<vector<int>> solution(vector<vector<int>> data, string ext, int val_ext, string sort_by) 
+int by_Data(string_view bench_data)
+{
+    if ("code" == bench_data)
+    {
+        return (int)DATA::CODE;
+    }
+    else if ("date" == bench_data)
+    {
+        return (int)DATA::DATE;
+    }
+    else if ("maximum" == bench_data)
+    {
+        return (int)DATA::MAXIMUM;
+    }
+    else if ("remain" == bench_data)
+    {
+        return (int)DATA::REMAIN;
+    }
+    else
+        return -1;
+}
+
+vector<vector<int>> Find_Ext_Datas(vector<vector<int>> data, int ext, int val_ext)
+{
+    vector<vector<int>> ext_data;
+
+    for (auto& data : data)
+    {
+        if (data[ext] < val_ext)
+        {
+            ext_data.push_back(data);
+        }
+    }
+    return ext_data;
+}
+
+void Sort_Data(vector<vector<int>>& ext_data, int sort_by)
+{
+    std::stable_sort(ext_data.begin(), ext_data.end(), [&](vector<int> Src, vector<int> Dst) {
+
+        return Src[sort_by] < Dst[sort_by];
+
+        });
+}
+
+vector<vector<int>> solution(vector<vector<int>> data, string ext, int val_ext, string sort_by)
 {
     vector<vector<int>> answer;
+
+    int iExt = by_Data(ext);
+    int iSort = by_Data(sort_by);
+
+    answer = Find_Ext_Datas(data, iExt, val_ext);
+
+    Sort_Data(answer, iSort);
 
     return answer;
 }
@@ -20,7 +73,7 @@ vector<vector<int>> solution(vector<vector<int>> data, string ext, int val_ext, 
 int main()
 {
     int iDataSize = 0;
-    int iData[DATA_END] = { 0 };
+    int iData[(int)DATA::DATA_END] = { 0 };
     vector<vector<int>> data;
     vector<int> entry_data;
     entry_data.reserve(4);
@@ -30,29 +83,31 @@ int main()
 
     for (size_t i = 0; i < iDataSize; i++)
     {
-        _Fill_zero_memset(iData, DATA_END);
+        _Fill_zero_memset(iData, (int)DATA::DATA_END);
 
         for (size_t j = 0; j < 4; j++)
         {
             switch (j)
             {
-            case DATA::CODE:
+            case (int)DATA::CODE:
                 cout << "코드 : ";
-                cin >> iData[DATA::CODE];
-                entry_data.push_back(iData[DATA::CODE]);
+                cin >> iData[(int)DATA::CODE];
+                entry_data.push_back(iData[(int)DATA::CODE]);
                 break;
-            case DATA::DATE:
+            case (int)DATA::DATE:
                 cout << "날짜 : ";
-                cin >> iData[DATA::DATE];
-                entry_data.push_back(iData[DATA::DATE]);
+                cin >> iData[(int)DATA::DATE];
+                entry_data.push_back(iData[(int)DATA::DATE]);
                 break;
-            case DATA::MAXIMUM:
+            case (int)DATA::MAXIMUM:
                 cout << "최대 수량 : ";
-                cin >> iData[DATA::MAXIMUM];
-                entry_data.push_back(iData[DATA::MAXIMUM]);
+                cin >> iData[(int)DATA::MAXIMUM];
+                entry_data.push_back(iData[(int)DATA::MAXIMUM]);
                 break;
-            case DATA::REMAIN:
+            case (int)DATA::REMAIN:
                 cout << "현재 수량 : ";
+                cin >> iData[(int)DATA::REMAIN];
+                entry_data.push_back(iData[(int)DATA::REMAIN]);
                 break;
             default:
                 break;
@@ -83,16 +138,16 @@ int main()
         {
             switch (j)
             {
-            case DATA::CODE:
+            case (int)DATA::CODE:
                 cout << "코드 : " << out_data[i][j];
                 break;
-            case DATA::DATE:
+            case (int)DATA::DATE:
                 cout << " 날짜 : " << out_data[i][j];
                 break;
-            case DATA::MAXIMUM:
+            case (int)DATA::MAXIMUM:
                 cout << " 최대 수량 : " << out_data[i][j];
                 break;
-            case DATA::REMAIN:
+            case (int)DATA::REMAIN:
                 cout << " 현재 수량 : " << out_data[i][j] << endl;
                 break;
             default:
