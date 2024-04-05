@@ -4,12 +4,13 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <charconv>
 
 using namespace std;
 
 int solution(vector<vector<string>> board, int h, int w) 
 {
-    int answer = 0;
+    int answer = {};
     string strSelectColor = board[h][w];
 
     int iCheck_H[4] = { h-1, h, h+1, h };
@@ -34,13 +35,13 @@ int solution(vector<vector<string>> board, int h, int w)
 int main()
 {
     vector<vector<string>> Board;
-    int iBoardNumb = 0;
+    int iBoardNumb = {};
 
-    int iColorNumb;
+    int iColorNumb = {};
     string strColor;
   
-    int iHeight = 0;
-    int iWidth = 0;
+    int iHeight = {};
+    int iWidth = {};
 
     cout << "º¸µå ¼ö : ";
     cin >> iBoardNumb;
