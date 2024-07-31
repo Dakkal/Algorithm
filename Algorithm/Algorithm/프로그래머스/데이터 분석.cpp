@@ -45,6 +45,7 @@ vector<vector<int>> Find_Ext_Datas(vector<vector<int>> data, int ext, int val_ex
         }
     }
     return ext_data;
+
 }
 
 void Sort_Data(vector<vector<int>>& ext_data, int sort_by)

@@ -21,8 +21,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="프로그래머스\달리기 경주.cpp">
-      <Filter>Progress</Filter>
+    <ClCompile Include="백준\11725 - 트리의 부모 찾기.cpp">
+      <Filter>Desc\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
